@@ -1,0 +1,123 @@
+export {};
+// https://bobbyhadz.com/blog/typescript-make-types-global#declare-global-types-in-typescript
+
+declare global {
+  interface IRequest {
+    url: string;
+    method: string;
+    body?: { [key: string]: any };
+    queryParams?: any;
+    useCredentials?: boolean;
+    headers?: any;
+    nextOption?: any;
+  }
+
+  interface IBackendRes<T> {
+    error?: string | string[];
+    message: string;
+    statusCode: number | string;
+    data?: T;
+  }
+
+  interface IModelPaginate<T> {
+    meta: {
+      current: number;
+      pageSize: number;
+      pages: number;
+      total: number;
+    };
+    result: T[];
+  }
+
+  interface IPost {
+    _id: string;
+    namePost: string;
+    content: string;
+    images: string[];
+    videos: string[];
+    userId: {
+      name: string;
+    };
+    likesCount: number;
+    commentsCount: number;
+    createdBy: {
+      _id: string;
+      email: string;
+    };
+
+    isDeleted: boolean;
+    deletedAt: string | null;
+    createdAt: string;
+    updatedAt: string;
+    isLiked: boolean;
+  }
+
+  interface IAuthUser {
+    access_token: string;
+    refresh_token: string;
+    user: IUser;
+  }
+
+  interface ITrackContext {
+    currentTrack: IShareTrack;
+    setCurrentTrack: (v: IShareTrack) => void;
+  }
+
+  interface IShareTrack extends ITrackTop {
+    isPlaying: boolean;
+  }
+
+  export interface IUserRef {
+    _id: string;
+    email: string;
+  }
+
+  export interface IComment {
+    _id: string;
+    postId: string;
+    userId: string;
+    parentId?: string | null; // có thể null hoặc không có
+    content: string;
+    likesCount: number;
+    repliesCount: number;
+    createdBy: IUserRef;
+    updatedBy: IUserRef;
+
+    // CHÚ Ý: children có thể có hoặc không!
+    children?: IComment[]; // mảng IComment lồng nhau
+  }
+
+  export interface IPostDetail {
+    _id: string;
+    namePost: string;
+    content: string;
+    images: string[];
+    videos: string[];
+    userId: string | IUserRef; // có thể populate hoặc chỉ là ID
+    createdBy: IUserRef;
+    isDeleted: boolean;
+    createdAt: string; // ISO Date string
+    updatedAt: string | null;
+    likesCount: number;
+    commentsCount: number;
+    isLiked: boolean; // dựa vào user hiện tại
+    comments: IComment[]; // danh sách comment cấp 1
+  }
+  interface ITrackLike {
+    _id: string;
+    title: string;
+    description: string;
+    category: string;
+    imgUrl: string;
+    trackUrl: string;
+    countLike: number;
+    countPlay: number;
+    createdAt: string;
+    updatedAt: string;
+  }
+
+  interface IFile {
+    images: string[];
+    videos: string[];
+  }
+}
