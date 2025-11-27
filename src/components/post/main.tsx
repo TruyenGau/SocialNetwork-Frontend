@@ -36,7 +36,7 @@ interface IProps {
   session: any;
 }
 
-export default function PostList({ session }: IProps) {
+const PostList = ({ session }: IProps) => {
   const [openCommentBox, setOpenCommentBox] = useState<string | null>(null);
   const [commentText, setCommentText] = useState<string>("");
   const [selectedPostId, setSelectedPostId] = useState<string>("");
@@ -58,10 +58,10 @@ export default function PostList({ session }: IProps) {
       const res = await sendRequest<IBackendRes<IModelPaginate<IPost>>>({
         url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/posts`,
         method: "GET",
-        queryParams: { current: 1, pageSize: 100, sort: "-createdAt" },
+        queryParams: { current: 1, pageSize: 20, sort: "-createdAt" },
         headers: { Authorization: `Bearer ${session?.access_token}` },
       });
-
+      await new Promise((resolve) => setTimeout(resolve, 3000));
       setPosts(res.data?.result ?? []);
     };
 
@@ -167,6 +167,7 @@ export default function PostList({ session }: IProps) {
   const handleProfileMenuOpen = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
   };
+  // await new Promise((resolve) => setTimeout(resolve, 3000));
   return (
     <>
       {posts.map((post) => (
@@ -183,27 +184,30 @@ export default function PostList({ session }: IProps) {
         >
           {/* HEADER */}
           <CardHeader
-            avatar={<Avatar>{post.createdBy?.email[0].toUpperCase()}</Avatar>}
+            avatar={
+              <Avatar
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/post/images/${post.userId.avatar}`}
+              ></Avatar>
+            }
             action={
               <IconButton onClick={handleProfileMenuOpen}>
-                <MoreVert />
+                <MoreVert
+                  onClick={(e) => {
+                    setSelectedPostIdForMenu(post._id); // LƯU ID lại
+                  }}
+                />
               </IconButton>
             }
-            onClick={(e) => {
-              setSelectedPostIdForMenu(post._id); // LƯU ID lại
-              handleProfileMenuOpen(e);
-            }}
             title={post.userId?.name}
             subheader={new Date(post.createdAt).toLocaleDateString()}
           />
 
-          {/* IMAGE */}
-          {post.images.length > 0 && (
+          {/* 📸 HIỂN THỊ ẢNH */}
+          {post.images && post.images.length > 0 && (
             <CardMedia
-              onClick={() => setSelectedPostId(post._id)}
               component="img"
+              onClick={() => setSelectedPostId(post._id)}
               src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/post/images/${post.images[0]}`}
-              alt={post.namePost}
               sx={{
                 width: "100%",
                 maxHeight: "600px",
@@ -213,12 +217,27 @@ export default function PostList({ session }: IProps) {
             />
           )}
 
+          {/* 🎬 HIỂN THỊ VIDEO */}
+          {post.videos && post.videos.length > 0 && (
+            <Box
+              sx={{ width: "100%", bgcolor: "#000" }}
+              onClick={() => setSelectedPostId(post._id)}
+            >
+              <video
+                controls
+                style={{
+                  width: "100%",
+                  maxHeight: "600px",
+                  borderRadius: "8px",
+                }}
+                src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/post/videos/${post.videos[0]}`}
+              />
+            </Box>
+          )}
+
           {/* CONTENT */}
           <CardContent>
             <Typography variant="h6" fontWeight="bold">
-              {post.namePost}
-            </Typography>
-            <Typography variant="body2" color="text.secondary">
               {post.content}
             </Typography>
           </CardContent>
@@ -322,4 +341,6 @@ export default function PostList({ session }: IProps) {
       )}
     </>
   );
-}
+};
+
+export default PostList;

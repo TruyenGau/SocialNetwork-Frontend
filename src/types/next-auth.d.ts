@@ -9,6 +9,8 @@ interface IUser {
   permissions: string;
   online: string;
   type: string;
+  avatar: string;
+  coverPhoto: string;
 }
 
 declare module "next-auth/jwt" {

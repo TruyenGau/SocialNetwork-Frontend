@@ -18,7 +18,11 @@ export default function Rightbar() {
     <Box
       flex={2}
       p={2}
-      sx={{ display: { xs: "none", sm: "block" }, padding: "40px 10px" }}
+      sx={{
+        display: { xs: "none", sm: "block" },
+        padding: "40px 10px",
+        marginTop: "-25px",
+      }}
     >
       <Box position="fixed" width={300}>
         <Typography variant="h6" fontWeight={100}>

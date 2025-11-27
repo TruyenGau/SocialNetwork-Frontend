@@ -200,7 +200,7 @@ export default function PostDetailModal({
           boxShadow: 24,
           p: 2,
           width: "85%",
-          maxWidth: 700,
+          maxWidth: 600,
           maxHeight: "90vh",
           overflowY: "auto",
         }}
@@ -213,9 +213,10 @@ export default function PostDetailModal({
         </Box>
 
         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-          <Avatar sx={{ bgcolor: "#c0c9d3ff" }}>
-            {session?.user?.name?.[0]?.toUpperCase() || "M"}
-          </Avatar>
+          <Avatar
+            sx={{ bgcolor: "#c0c9d3ff" }}
+            src={`${process.env.NEXT_PUBLIC_BACKEND_URL}/post/images/${post?.author.avatar}`}
+          ></Avatar>
 
           <Typography variant="h6" fontWeight="bold">
             {session?.user?.name || "User Name"}

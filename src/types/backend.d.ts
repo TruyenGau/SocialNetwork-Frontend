@@ -37,6 +37,7 @@ declare global {
     videos: string[];
     userId: {
       name: string;
+      avatar: string;
     };
     likesCount: number;
     commentsCount: number;
@@ -102,6 +103,10 @@ declare global {
     commentsCount: number;
     isLiked: boolean; // dựa vào user hiện tại
     comments: IComment[]; // danh sách comment cấp 1
+    author: {
+      _id: string;
+      avatar: string;
+    };
   }
   interface ITrackLike {
     _id: string;
