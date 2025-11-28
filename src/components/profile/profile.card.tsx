@@ -1,5 +1,6 @@
 "use client";
 import React from "react";
+import Link from "next/link";
 import {
   Box,
   Card,
@@ -15,9 +16,11 @@ interface ProfileCardProps {
   followers: number;
   avatarUrl: string;
   coverUrl: string;
+  id: string;
 }
 
 const ProfileCard = ({
+  id,
   name,
   followers,
   avatarUrl,
@@ -55,23 +58,25 @@ const ProfileCard = ({
           {followers} followers
         </Typography>
 
-        <Button
-          variant="contained"
-          sx={{
-            mt: 1,
-            borderRadius: "16px",
-            textTransform: "none",
-            px: 2,
-            py: 0.5,
-            fontSize: "0.8rem", // chữ nhỏ hơn
-            backgroundColor: "#4dce57ff",
-            "&:hover": {
-              backgroundColor: "#4dce57ff !important", // giữ nguyên 👈
-            },
-          }}
-        >
-          My Profile
-        </Button>
+        <Link href={`/profile/${id}`} style={{ textDecoration: "none" }}>
+          <Button
+            variant="contained"
+            sx={{
+              mt: 1,
+              borderRadius: "16px",
+              textTransform: "none",
+              px: 2,
+              py: 0.5,
+              fontSize: "0.8rem", // chữ nhỏ hơn
+              backgroundColor: "#4dce57ff",
+              "&:hover": {
+                backgroundColor: "#4dce57ff !important", // giữ nguyên 👈
+              },
+            }}
+          >
+            My Profile
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   );

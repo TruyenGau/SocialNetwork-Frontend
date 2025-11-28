@@ -61,7 +61,7 @@ const PostList = ({ session }: IProps) => {
         queryParams: { current: 1, pageSize: 20, sort: "-createdAt" },
         headers: { Authorization: `Bearer ${session?.access_token}` },
       });
-      await new Promise((resolve) => setTimeout(resolve, 3000));
+      // await new Promise((resolve) => setTimeout(resolve, 3000));
       setPosts(res.data?.result ?? []);
     };
 

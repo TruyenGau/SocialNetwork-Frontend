@@ -67,6 +67,7 @@ export default function Sidebar() {
           }}
         >
           <ProfileCard
+            id={user?._id ?? ""}
             name={user?.name ?? ""}
             followers={142}
             avatarUrl={user?.avatar ?? ""}
